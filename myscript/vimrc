@@ -1,0 +1,109 @@
+set nu                      "" set line number
+set ruler                   "" set the ruler
+set showmode
+set nocompatible            "" set no compatible with vi, so that vim
+                            "" can use some its feathers
+syntax on
+color desert                "" the color scheme of vim, the the scheme file
+                            "" in the folder name colors
+filetype on                 "" start the file type judge
+filetype plugin on          "" enable plugin for specific file type
+"set spell                  "" check whether word in this file is spelled wrong
+set backupdir=~/.vimbackup  "" 设置备份文件保存路径
+set swapfile                "" save the file to swap file, when vim exit un
+set backup                  "" when the file changes, vim will save the
+                            "" original file content to a file with the
+                            "" original file name and an alpha '~'
+set backupext=~             "" the subfix of backup file name
+
+
+" 搜索设置
+set incsearch               "" increase search
+set hlsearch                "" highlight the search result
+set ignorecase smartcase    "" ignore case when search, but if the patten has
+                            "" a capital letter, it will not ignore
+set backspace=2
+set autoindent              "" Copy indent from current line when starting a new line
+set cindent                 "" indent according the c indenting rules
+set smartindent             "" Do smart autoindenting when starting a new line.
+                            ""Works for C-like
+                            "" programs, but can also be used for other languages.
+                            "" When 'cindent' is on, setting 'si' has no effect
+
+" 设置Tab
+set expandtab               "" use the appropriate number of spaces to replace a <Tab>
+set tabstop=4               "" Number of spaces to show, when a <Tab> insert to the file
+set shiftwidth=4            "" Number of spaces to use for each step of (auto)indent
+                            "" use for "cindent", ">>", "<<", etc.
+set softtabstop=4
+set smarttab
+
+" 文件编码相关
+set fileencoding=utf-8
+set fileencodings=utf-8,usc-bom,euc-jp,gb18030,gbk,gb2312,cp936
+set encoding=utf-8
+
+" 显示状态栏
+set laststatus=2
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M:%S\")}
+
+set list                            "" set vim to display unprintable characters
+set listchars=trail:-,tab:>-        "" set how to display unprintable characters
+"set foldenable
+"set foldmethod=indent
+set scrolloff=5                     "" screen lines to keep above and below the cursor
+"set colorcolumn=80                  "" (cc), highlight the specific column
+set showmatch                       "" highlight the correspond bracket
+set matchtime=10                    "" the highlight time of bracket
+set cursorline                      "" (cul), highlight the row of cursor on
+set cursorcolumn                    "" (cuc), highlight the column of cursor on
+
+set wrap                            "" 当文本在一行不能完全显示的时候,另起一行显示
+
+if has("gui_running")
+    hi cursorline guibg=#444444
+    hi cursorcolumn guibg=#444444
+else
+    hi cursorline  term=none cterm=none ctermbg=0
+    hi cursorcolum term=none cterm=none ctermbg=0
+endif
+
+
+" gui客户端设置
+if has("gui_running")
+"    set guifont=Consolas:h11            "" set font and size
+    set guioptions=egmrLtT              "" control the gui widget of vim
+endif
+
+let mapleader=','
+
+" 通过",ss"命令，重新加载.vimrc文件
+map <silent> <leader>ss :source ~/.vimrc<CR>
+" 通过",ee"命令，快速打开.vimrc文件
+map <silent> <leader>ee :e ~/.vimrc<CR>
+" 自动命令，当.vimrc文件被编辑并保存后，重新加载.vimrc文件
+
+
+" 删除末尾的空白字符，silent!表示如果没有找到空白，不提示
+map <silent> <leader>rb :silent! %s/\s\+$//g<CR>
+
+autocmd! bufwritepost .vimrc source ~/.vimrc
+
+" vim 保存上次编辑位置
+autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+
+
+
+"""""""""""""""""""" tagbar   """""""""""""""""""""""""""""
+nmap <Leader>tb :TagbarToggle<CR>
+let g:tagbar_ctags_bin='/usr/bin/ctags'
+let g:tagbar_width=30
+autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
+
+
+
+"""""""""""""""""""" powerline """""""""""""""""""""""""""""
+set laststatus=2
+let g:Powerline_symbols='unicode'
+let g:Powerline_theme='desert'
+"let g:Powerline_dividers_override=['>>', '>', '<<', '<']
